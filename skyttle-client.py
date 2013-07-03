@@ -12,7 +12,6 @@ where `language` is one of: "en", "fr", "de", or "ru"
 """
 
 import sys
-import time
 import json
 import urllib
 import urllib2
@@ -23,8 +22,8 @@ MASHAPE_AUTH = <your mashape key>
 
 
 TEXTS = {
-    'ru': """<doc id="doc1">Мы были в этом ресторане и раньше и качество
-    обслуживания было хорошим, но вчера мы были сильно разочарованы.</doc>""",
+    'ru': """Мы были в этом ресторане и раньше и качество
+    обслуживания было хорошим, но вчера мы были сильно разочарованы.""",
 
     'de': """Wir waren in diesem Restaurant ein paar Mal auch früher gewesen,
     und das Essen war ok, aber dieses Mal waren wir sehr enttäuscht.""",
@@ -44,8 +43,6 @@ def main(lang='en'):
     annotate = 1
     text = TEXTS[lang]
 
-    start = time.time()
-
     opener = urllib2.build_opener(urllib2.HTTPHandler)
     params = {'text': text, 'lang': lang, 'keywords': keywords,
               'sentiment': sentiment, 'annotate': annotate}
@@ -54,7 +51,6 @@ def main(lang='en'):
     request = urllib2.Request(URL, urllib.urlencode(params), headers=headers)
     response = opener.open(request)
     opener.close()
-    duration = time.time() - start
     data = json.loads(response.read())
 
     print 'RESPONSE HEADERS:'
@@ -89,6 +85,5 @@ def main(lang='en'):
             print doc.get('doc_text', '')
             print '-'*79
 
-    print 'Took %f secs' % duration
 
 main(lang=sys.argv[1])
