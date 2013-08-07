@@ -6,12 +6,13 @@ Mashape account)
 
 Usage:
 
-    python skyttle-client.py <language>
+    python skyttle-python-client.py <language>
 
 where `language` is one of: "en", "fr", "de", or "ru"
 """
 
 import sys
+import time
 import json
 import urllib
 import urllib2
@@ -22,10 +23,10 @@ MASHAPE_AUTH = <your mashape key>
 
 
 TEXTS = {
-    'ru': """Мы были в этом ресторане и раньше и качество
-    обслуживания было хорошим, но вчера мы были сильно разочарованы.""",
+    'ru': """Мы были в этом ресторане и раньше и качество обслуживания было
+    хорошим, но вчера мы были сильно разочарованы.""",
 
-    'de': """Wir waren in diesem Restaurant ein paar Mal auch früher gewesen,
+    'de': """Wir waren in diesem Restaurant auch früher gewesen,
     und das Essen war ok, aber dieses Mal waren wir sehr enttäuscht.""",
 
     'en': """We have visited this restaurant a few times in the past, and the
@@ -41,16 +42,20 @@ def main(lang='en'):
     keywords = 1
     sentiment = 1
     annotate = 1
+    domain = 'hospitality'
     text = TEXTS[lang]
+
+    start = time.time()
 
     opener = urllib2.build_opener(urllib2.HTTPHandler)
     params = {'text': text, 'lang': lang, 'keywords': keywords,
-              'sentiment': sentiment, 'annotate': annotate}
+              'sentiment': sentiment, 'annotate': annotate, 'domain': domain}
     headers = {'X-Mashape-Authorization': MASHAPE_AUTH}
 
     request = urllib2.Request(URL, urllib.urlencode(params), headers=headers)
     response = opener.open(request)
     opener.close()
+    duration = time.time() - start
     data = json.loads(response.read())
 
     print 'RESPONSE HEADERS:'
@@ -85,5 +90,6 @@ def main(lang='en'):
             print doc.get('doc_text', '')
             print '-'*79
 
+    print 'Took %f secs' % duration
 
 main(lang=sys.argv[1])
