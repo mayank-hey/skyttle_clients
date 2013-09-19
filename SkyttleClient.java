@@ -7,23 +7,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class Client {
+public class SkyttleClient {
 
 	public static void main(String[] args) throws UnsupportedEncodingException{
-		String url = "http://livenlp.aws.af.cm/v0.1/";
-		String text = "The car is underpowered and often loses traction.";
-		String username = "<your username>";
-		String pwd = "<your password>";
+		String url = "https://sentinelprojects-skyttle20.p.mashape.com/";
+		String text = "We have visited this restaurant a few times in the past, and the meals have been ok, but this time we were deeply disappointed.";
 		String lang = "en";
-		String domain = "automotive";
 		String keywords = "1";
 		String sentiment = "1";
-		String annotate = "1";
+		String annotate = "0";
 
 		String params =
 		        "text=" + URLEncoder.encode(text, "UTF-8") +
-		        "&user=" + URLEncoder.encode(username, "UTF-8") +
-		        "&pwd=" + URLEncoder.encode(password, "UTF-8") +
 		        "&lang=" + URLEncoder.encode(lang, "UTF-8") +
 		        "&keywords=" + URLEncoder.encode(keywords, "UTF-8") +
 		        "&sentiment=" + URLEncoder.encode(sentiment, "UTF-8") +
@@ -45,6 +40,8 @@ public class Client {
 	      connection.setRequestMethod("POST");
 	      connection.setRequestProperty("Content-Type",
 	      				"application/x-www-form-urlencoded");
+	      connection.setRequestProperty("X-Mashape-Authorization",
+			YOUR_MASHAPE_KEY);
 	      connection.setUseCaches (false);
 	      connection.setDoInput(true);
 	      connection.setDoOutput(true);
